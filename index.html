@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://vega.github.io/vega/vega.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-lite/2.0.0-alpha.9/vega-lite.min.js"></script>
+  <script src="https://vega.github.io/vega-embed/vega-embed.min.js"></script>
+</head>
+<body>
+  <div>
+    <div id="viz"></div>
+    <select id="viz-selector">
+      {{#each options}}
+      <option value="{{this}}">{{this}}</option>
+      {{/each}}
+    </select>
+  </div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  var firstOption = document.querySelector("option");
+  vega.embed("#viz", "viz/" + firstOption.value);
+
+  var optionSelect = document.getElementById("viz-selector");
+  optionSelect.addEventListener("change", function() {
+    vega.embed("#viz", "viz/" + optionSelect.value);
+  });
+});
+</script>
+</body>
+</html>

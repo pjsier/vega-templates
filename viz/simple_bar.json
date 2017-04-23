@@ -1,0 +1,122 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+  "width": 800,
+  "height": 350,
+  "padding": 5,
+  "config": {
+    "text": {
+        "font": "Verdana",
+        "fontSize": 14
+    },
+    "axis": {
+        "labelFont": "Verdana",
+        "labelFontSize": 14
+    },
+    "range": {
+      "category": ["#336296", "#61A844", "#6d3a5e", "#512b1b", "#8D3B45", "#d08c29"]
+    },
+    "legend": {
+      "labelFont": "Verdana",
+      "labelFontSize": 14,
+      "symbolType": "square",
+      "offset": -150
+    }
+  },
+
+  "data": [
+    {
+      "name": "table",
+      "values": [
+        {"group": "First", "urm": 0.0796},
+        {"group": "Second", "urm": 0.0849},
+        {"group": "Third", "urm": 0.1120},
+        {"group": "Fourth", "urm": 0.1476},
+        {"group": "Fifth", "urm": 0.1477},
+        {"group": "Sixth", "urm": 0.2199}
+      ],
+      "transform": [
+        {
+          "type": "formula",
+          "as": "pct",
+          "expr": "format(datum.urm, '.2%')"
+        }
+      ]
+    }
+  ],
+
+  "scales": [
+    {
+      "name": "xscale",
+      "type": "band",
+      "domain": {"data": "table", "field": "group"},
+      "range": "width",
+      "padding": 0.1
+    },
+    {
+      "name": "yscale",
+      "type": "linear",
+      "domain": [0, 1],
+      "range": "height",
+      "round": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "table", "field": "group"},
+      "range": "category"
+    }
+  ],
+
+  "axes": [
+    {
+      "orient": "left",
+      "scale": "yscale",
+      "tickSize": 5,
+      "labelPadding": 7,
+      "format": "%"
+    },
+    {
+      "orient": "bottom",
+      "scale": "xscale",
+      "domain": false
+    }
+  ],
+
+  "legends": [
+    {"fill": "color", "type": "ordinal"}
+  ],
+
+  "marks": [
+    {
+      "type": "rect",
+      "from": {"data": "table"},
+      "encode": {
+        "enter": {
+          "x": {"scale": "xscale", "field": "group", "offset": 1},
+          "width": {"scale": "xscale", "band": 1, "offset": -1},
+          "y": {"scale": "yscale", "field": "urm"},
+          "y2": {"scale": "yscale", "value": 0},
+          "fill": {"scale": "color", "field": "group"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "table"},
+      "encode": {
+        "enter": {
+          "y": {"scale": "yscale", "field": "urm", "offset": -10},
+          "x": {
+            "scale": "xscale",
+            "field": "group",
+            "offset": {"scale": "xscale", "band": true, "mult": 0.5}
+          },
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"},
+          "text": {"field": "pct"}
+        }
+      }
+    }
+  ]
+}

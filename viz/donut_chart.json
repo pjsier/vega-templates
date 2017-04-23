@@ -1,0 +1,98 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+  "width": 600,
+  "height": 600,
+  "autosize": "none",
+
+  "config": {
+    "range": {
+      "category": ["#6d3a5e", "#336296", "#61A844", "#8D3B45", "#d08c29"]
+    },
+    "legend": {
+      "labelFont": "Verdana",
+      "labelFontSize": 30,
+      "labelLimit": 600,
+      "symbolType": "square",
+      "orient": "none"
+    }
+  },
+
+  "signals": [
+    {
+      "name": "startAngle",
+      "value": 0
+    },
+    {
+      "name": "endAngle",
+      "value": 6.29
+    }
+  ],
+
+  "data": [
+    {
+      "name": "table",
+      "values": [
+        {"race": "White", "count": 300},
+        {"race": "Latino", "count": 17},
+        {"race": "Black", "count": 28},
+        {"race": "Asian", "count": 128},
+        {"race": "Other/Multi-Racial", "count": 57}
+      ],
+      "transform": [
+        {
+          "type": "pie",
+          "field": "count",
+          "startAngle": {"signal": "startAngle"},
+          "endAngle": {"signal": "endAngle"}
+        }
+      ]
+    }
+  ],
+
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "table", "field": "race"},
+      "range": "category"
+    }
+  ],
+
+  "legends": [
+    {
+      "fill": "color",
+      "type": "category",
+      "values": ["White", "Latino", "Black", "Asian", "Other/Multi-Racial"],
+      "encode": {
+        "legend": {
+          "enter": {
+            "x": {"value": 150},
+            "y": {"value": 200}
+          }
+        }
+      }
+    }
+  ],
+
+  "marks": [
+    {
+      "type": "arc",
+      "from": {"data": "table"},
+      "encode": {
+        "enter": {
+          "fill": {"scale": "color", "field": "_id"},
+          "x": {"signal": "width / 2"},
+          "y": {"signal": "height / 2"}
+        },
+        "update": {
+          "startAngle": {"field": "startAngle"},
+          "endAngle": {"field": "endAngle"},
+          "padAngle": {"value": 0},
+          "innerRadius": {"value": 200},
+          "outerRadius": {"signal": "width / 2"},
+          "cornerRadius": {"value": 0}
+        }
+      }
+    }
+  ]
+}
