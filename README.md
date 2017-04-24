@@ -1,6 +1,6 @@
 # Templates for Vega Visualizations
 
-Templates in Vega 3.0 for generating different data visualizations.
+Templates in [Vega](https://vega.github.io/) (3.0 schema) for generating different data visualizations.
 
 ## Setup
 

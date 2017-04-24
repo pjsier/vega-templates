@@ -1,0 +1,73 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+  "width": 500,
+  "height": 650,
+
+  "projections": [
+    {
+      "name": "projection",
+      "type": "mercator",
+      "scale": 55000,
+      "center": [-87.73,41.83]
+    }
+  ],
+
+  "data": [
+    {
+      "name": "wardcount",
+      "url": "data/chi_wards.csv",
+      "format": {"type": "csv", "parse": {"ward": "string", "count": "number"}}
+    },
+    {
+      "name": "wards",
+      "url": "data/chi_wards.topojson",
+      "format": {"type": "topojson", "feature": "wards"},
+      "transform": [
+        {"type": "geopath", "projection": "projection"},
+        {"type": "lookup", "from": "wardcount", "key": "ward", "fields": ["properties.ward"], "as": ["value"]}
+      ]
+    }
+  ],
+
+  "legends": [
+    {
+      "fill": "color",
+      "orient": "bottom-left",
+      "title": "Count",
+      "encode": {
+        "symbols": {
+          "update": {
+            "shape": {"value": "square"},
+            "stroke": {"value": "#ccc"},
+            "strokeWidth": {"value": 0.2}
+          }
+        }
+      }
+    }
+  ],
+
+  "scales": [
+    {
+      "name": "color",
+      "type": "linear",
+      "domain": {"data": "wardcount", "field": "count"},
+      "range": {"scheme": "blues"}
+    }
+  ],
+
+  "marks": [
+    {
+      "type": "shape",
+      "from": {"data": "wards"},
+      "encode": {
+        "enter": {
+          "fill": {"scale": "color", "field": "value.count"},
+          "stroke": {"value": "black"}
+        }
+      },
+      "transform": [
+        { "type": "geoshape", "projection": "projection" }
+      ]
+    }
+  ]
+}

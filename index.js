@@ -39,8 +39,7 @@ http.createServer(function(request, response) {
       if (contentType) headers["Content-Type"] = contentType;
       if (filename.slice(-10) === "index.html") {
         var template = handlebars.compile(file);
-        var data = {options: fs.readdirSync('viz')};
-        file = template(data);
+        file = template({options: fs.readdirSync('viz')});
       }
       response.writeHead(200, headers);
       response.write(file, "binary");

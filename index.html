@@ -7,12 +7,12 @@
 </head>
 <body>
   <div>
-    <div id="viz"></div>
     <select id="viz-selector">
       {{#each options}}
       <option value="{{this}}">{{this}}</option>
       {{/each}}
     </select>
+    <div id="viz"></div>
   </div>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
